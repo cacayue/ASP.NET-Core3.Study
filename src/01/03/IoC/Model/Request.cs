@@ -1,4 +1,4 @@
-﻿namespace MvcLib.Model
+﻿namespace Model
 {
     public class Request
     {

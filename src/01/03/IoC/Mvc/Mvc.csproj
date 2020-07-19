@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Model\Model.csproj" />
     <ProjectReference Include="..\MvcLib\MvcLib.csproj" />
+    <ProjectReference Include="..\TemplateMethod\TemplateMethod.csproj" />
   </ItemGroup>
 
 </Project>

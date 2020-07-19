@@ -1,7 +1,7 @@
 ﻿
 using System;
 using System.Threading.Tasks;
-using MvcLib.Model;
+using Model;
 
 namespace MvcLib
 {
