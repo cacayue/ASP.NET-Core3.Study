@@ -2,8 +2,10 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Security.Authentication.ExtendedProtection;
 using DI;
 using EasyDI.Interface;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EasyDI
 {
@@ -11,14 +13,16 @@ namespace EasyDI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("-------test1---------");
-            Test1();
-            Console.WriteLine("-------test2---------");
-            Test2();
-            Console.WriteLine("-------test3---------");
-            Test3();
-            Console.WriteLine("-------test4---------");
-            Test4();
+            //Console.WriteLine("-------test1---------");
+            //Test1();
+            //Console.WriteLine("-------test2---------");
+            //Test2();
+            //Console.WriteLine("-------test3---------");
+            //Test3();
+            //Console.WriteLine("-------test4---------");
+            //Test4();
+            Test5();
+            
             Console.ReadKey();
         }
 
@@ -119,6 +123,45 @@ namespace EasyDI
                 }
 
                 Console.WriteLine("Root cat is disposed.");
+            }
+        }
+
+        static void Test5()
+        {
+            var services = new ServiceCollection()
+                .AddTransient<IFoo,Foo>()
+                .AddScoped<IBar>(_=>new Bar())
+                .AddSingleton<IBaz>(new Baz());
+            var factory = new CatServiceProviderFactory();
+            var builder = factory.CreateBuilder(services)
+                .Register(Assembly.GetEntryAssembly());
+            var container = factory.CreateServiceProvider(builder);
+
+            GetServices();
+            GetServices();
+
+            Console.WriteLine("\nRoot container is disposed");
+            (container as IDisposable)?.Dispose();
+
+            void GetServices()
+            {
+                using (var scope = container.CreateScope())
+                {
+                    Console.WriteLine("\nService scope is created");
+                    var child = scope.ServiceProvider;
+
+                    child.GetService<IFoo>();
+                    child.GetServices<IFoo>();
+                    child.GetServices<IBar>();
+                    child.GetServices<IBaz>();
+                    child.GetServices<IQux>();
+                    Console.WriteLine();
+                    child.GetServices<IFoo>();
+                    child.GetServices<IBar>();
+                    child.GetServices<IBaz>();
+                    child.GetServices<IQux>();
+                    Console.WriteLine("\nService scope is disposed");
+                }
             }
         }
     }
