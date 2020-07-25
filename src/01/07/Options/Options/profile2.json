@@ -1,0 +1,18 @@
+{
+    "foo": {
+        "gender": "Male",
+        "age": "18",
+        "contactInfo": {
+            "emailAddress": "@out",
+            "phoneNo": "18726713"
+        }
+    },
+    "bar": {
+        "gender": "Female",
+        "age": "18",
+        "contactInfo": {
+            "emailAddress": "@out",
+            "phoneNo": "18126713"
+        }
+    }
+}
